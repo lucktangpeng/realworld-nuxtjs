@@ -20,8 +20,7 @@
                     exact
                     :class="{ active: tab === 'your_feed' }"
                     :to="{ name: 'home', query: { tab: 'your_feed' } }"
-                    >Your Feed</nuxt-link
-                  >
+                  >Your Feed</nuxt-link>
                 </li>
                 <li class="nav-item">
                   <nuxt-link
@@ -29,8 +28,7 @@
                     :class="{ active: tab === 'global_feed' }"
                     :to="{ name: 'home' }"
                     exact
-                    >Global Feed</nuxt-link
-                  >
+                  >Global Feed</nuxt-link>
                 </li>
                 <li class="nav-item" v-if="tab === 'tag'">
                   <nuxt-link
@@ -38,17 +36,12 @@
                     :class="{ active: tab === 'tag' }"
                     exact
                     to="/"
-                    ># {{ tag }}</nuxt-link
-                  >
+                  ># {{ tag }}</nuxt-link>
                 </li>
               </ul>
             </div>
 
-            <div
-              class="article-preview"
-              v-for="article in articles"
-              :key="article.slug"
-            >
+            <div class="article-preview" v-for="article in articles" :key="article.slug">
               <div class="article-meta">
                 <nuxt-link :to="{ path: `profile/${article.author.username}` }">
                   <img :src="article.author.image" />
@@ -57,9 +50,7 @@
                   <nuxt-link
                     :to="{ path: `profile/${article.author.username}` }"
                     class="author"
-                  >
-                    {{ article.author.username }}
-                  </nuxt-link>
+                  >{{ article.author.username }}</nuxt-link>
                   <span class="date">{{ article.createdAt | data }}</span>
                 </div>
                 <button
@@ -72,10 +63,7 @@
                   {{ article.favoritesCount }}
                 </button>
               </div>
-              <nuxt-link
-                :to="{ path: `article/${article.slug}` }"
-                class="preview-link"
-              >
+              <nuxt-link :to="{ path: `article/${article.slug}` }" class="preview-link">
                 <h1>{{ article.description }}</h1>
                 <p>{{ article.body }}</p>
                 <span>Read more...</span>
@@ -92,8 +80,7 @@
                   <nuxt-link
                     class="page-link ng-binding"
                     :to="{ name: 'home', query: { page: num, tag } }"
-                    >{{ num }}</nuxt-link
-                  >
+                  >{{ num }}</nuxt-link>
                 </li>
               </ul>
             </nav>
@@ -112,8 +99,7 @@
                     query: { tag: tag, page: page, tab: 'tag' },
                   }"
                   class="tag-pill tag-default"
-                  >{{ tag }}</nuxt-link
-                >
+                >{{ tag }}</nuxt-link>
               </div>
             </div>
           </div>
@@ -129,7 +115,7 @@ import {
   getTags,
   getArticlesFeed,
   addFavorite,
-  deleteFavorite,
+  deleteFavorite
 } from "@/api/article.js";
 export default {
   name: "homeIndex",
@@ -143,12 +129,11 @@ export default {
       const loadArticle = tab === "your_feed" ? getArticlesFeed : getArticles;
       const [articleRes, tagsRes] = await Promise.all([
         loadArticle({ limit, offset, tag }),
-        getTags(),
+        getTags()
       ]);
-
       const { articles, articlesCount } = articleRes.data;
       const { tags } = tagsRes.data;
-      articles.forEach((element) => {
+      articles.forEach(element => {
         element.addFavoriteStatus = false;
       });
 
@@ -159,8 +144,8 @@ export default {
   },
   computed: {
     totolPages() {
-      return this.articlesCount / this.limit;
-    },
+      return Math.ceil(this.articlesCount / this.limit);
+    }
   },
   watchQuery: ["page", "tag", "tag_tab", "tab"],
   methods: {
@@ -182,8 +167,8 @@ export default {
       } catch (e) {
         console.log("点赞失败了");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

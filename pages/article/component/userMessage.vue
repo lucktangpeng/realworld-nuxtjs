@@ -18,9 +18,9 @@
         <i class="ion-plus-round"></i>
         &nbsp;
         {{
-          article.author.following
-            ? `Follow ${article.author.username}`
-            : `Unfollow ${article.author.username}`
+        article.author.following
+        ? `Follow ${article.author.username}`
+        : `Unfollow ${article.author.username}`
         }}
         <!-- <span class="counter">(10)</span> -->
       </button>
@@ -30,8 +30,7 @@
         :to="{ name: 'update', query: { slug: article.slug } }"
       >
         <i class="ion-edit"></i> Edit Article
-      </nuxt-link>
-      &nbsp;&nbsp;
+      </nuxt-link>&nbsp;&nbsp;
       <button class="btn btn-sm btn-outline-primary" v-if="!isMyself">
         <i class="ion-heart"></i>
         &nbsp; Favorite Post
@@ -58,9 +57,9 @@ export default {
   props: {
     article: {
       type: Object,
-      required: true,
+      required: true
     },
-    deleteStatus: false,
+    deleteStatus: false
   },
   methods: {
     async followClick(article) {
@@ -87,14 +86,16 @@ export default {
       } catch (e) {
         console.log("删除失败");
       }
-    },
+    }
   },
   computed: {
     ...mapState(["user"]),
     isMyself() {
-      return this.user.username === this.article.author.username;
-    },
-  },
+      console.log(this.article.author);
+      // this.user.username === this.article.author
+      return false;
+    }
+  }
 };
 </script>
 

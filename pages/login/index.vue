@@ -4,9 +4,7 @@
       <div class="container page">
         <div class="row">
           <div class="col-md-6 offset-md-3 col-xs-12">
-            <h1 class="text-xs-center">
-              {{ isLogin ? "Sign in" : "Sign up" }}
-            </h1>
+            <h1 class="text-xs-center">{{ isLogin ? "Sign in" : "Sign up" }}</h1>
             <p class="text-xs-center">
               <a href>Have an account?</a>
             </p>
@@ -40,9 +38,9 @@
                   placeholder="Password"
                 />
               </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right">
-                {{ isLogin ? "Sign in" : "Sign up" }}
-              </button>
+              <button
+                class="btn btn-lg btn-primary pull-xs-right"
+              >{{ isLogin ? "Sign in" : "Sign up" }}</button>
             </form>
           </div>
         </div>
@@ -65,28 +63,31 @@ export default {
       user: {
         email: "",
         password: "",
-        username: "",
-      },
+        username: ""
+      }
     };
   },
   computed: {
     isLogin() {
       return this.$route.name === "login";
-    },
+    }
   },
   methods: {
     ...mapMutations(["setUser"]),
     async onSubmit() {
-      if (!this.isLogin) {
-        const { data } = await register({ user: this.user });
-      } else {
-        const { data } = await login({ user: this.user });
+      try {
+        const { data } = this.isLogin
+          ? await login({ user: this.user })
+          : await register({ user: this.user });
+        this.setUser(data.user);
+        Cookie.set("user", data.user);
+        this.$router.push({ name: "home" });
+      } catch (e) {
+        console.log(e);
+        console.log("登陆出错了");
       }
-      this.setUser(data.user);
-      Cookie.set("user", data.user);
-      this.$router.push({ name: "home" });
-    },
-  },
+    }
+  }
 };
 </script>
 
