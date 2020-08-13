@@ -1,4 +1,3 @@
-// import request from "../request/index.js";
 import { request } from "../plugins/request.js";
 
 export const getArticles = function(params) {
@@ -17,7 +16,6 @@ export const getTags = function(params) {
   });
 };
 
-// /api/articles/feed
 export const getArticlesFeed = function(params) {
   return request({
     method: "get",
@@ -70,11 +68,19 @@ export const addArticle = function(data) {
     data,
   });
 };
+
+export const updateArticle = function(slug, data) {
+  return request({
+    method: "put",
+    url: `/api/articles/${slug}`,
+    data,
+  });
+};
 // /api/articles/:slug
 
 export const deleteArticle = function(slug) {
   return request({
     method: "delete",
-    url: `/api/articles/:slug`,
+    url: `/api/articles/${slug}`,
   });
 };

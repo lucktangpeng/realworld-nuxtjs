@@ -10,12 +10,12 @@
             <!-- Add "active" class when you're on that page" -->
             <nuxt-link class="nav-link active" to="/"></nuxt-link>
           </li>
-          <!-- <li class="nav-item">
-            <nuxt-link class="nav-link" to="/"></nuxt-link>
-            <a class="nav-link" href="">
+          <li class="nav-item">
+            <!-- <nuxt-link class="nav-link" to="/"></nuxt-link> -->
+            <nuxt-link class="nav-link" :to="{ name: 'create'}">
               <i class="ion-compose"></i>&nbsp;New Post
-            </a>
-          </li>-->
+            </nuxt-link>
+          </li>
           <li class="nav-item">
             <nuxt-link class="nav-link" to="/settings">
               <i class="ion-gear-a"></i>&nbsp;Settings
@@ -64,8 +64,8 @@ import { mapState } from "vuex";
 export default {
   name: "layoutindex",
   computed: {
-    ...mapState(["user"]),
-  },
+    ...mapState(["user"])
+  }
 };
 </script>
 

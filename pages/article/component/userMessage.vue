@@ -58,8 +58,12 @@ export default {
     article: {
       type: Object,
       required: true
-    },
-    deleteStatus: false
+    }
+  },
+  data() {
+    return {
+      deleteStatus: false
+    };
   },
   methods: {
     async followClick(article) {
@@ -83,6 +87,7 @@ export default {
         this.deleteStatus = true;
         await deleteArticle(slug);
         this.deleteStatus = false;
+        this.$router.push({ name: "home" });
       } catch (e) {
         console.log("删除失败");
       }
@@ -91,9 +96,7 @@ export default {
   computed: {
     ...mapState(["user"]),
     isMyself() {
-      console.log(this.article.author);
-      // this.user.username === this.article.author
-      return false;
+      return this.user.username === this.article.author.username;
     }
   }
 };

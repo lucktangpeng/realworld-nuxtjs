@@ -61,9 +61,7 @@
                   type="button"
                   @click="submitEvent"
                   :disabled="status"
-                >
-                  Publish Article
-                </button>
+                >Publish Article</button>
               </fieldset>
             </form>
           </div>
@@ -74,37 +72,39 @@
 </template>
 
 <script>
-import { addArticle, getArticle } from "@/api/article";
+import { addArticle, getArticle, updateArticle } from "@/api/article";
 export default {
   name: "editorIndex",
+  middleware: "auth",
   data() {
     return {
       formData: {
         title: "",
         description: "",
         body: "",
-        tagList: [],
+        tagList: []
       },
       tagValue: "",
-      status: false,
+      status: false
     };
   },
   async mounted() {
-    if (this.$route.name === "update") {
-      //   console.log(this.$route.query.slug);
-      const articleRes = await getArticle(this.$route.query.slug);
+    if (this.isUpdate) {
+      const articleRes = await getArticle(this.routerSlug);
       const old_article = articleRes.data.article;
-      for (key in old_article) {
-        console.log(key);
+      for (let key in this.formData) {
+        this.formData[key] = old_article[key];
       }
-      console.log(articleRes);
     }
   },
   methods: {
     async submitEvent() {
       try {
         this.status = true;
-        const addRes = await addArticle({ article: this.formData });
+        const articleData = { article: this.formData };
+        const addRes = this.isUpdate
+          ? await updateArticle(this.routerSlug, articleData)
+          : await addArticle(articleData);
         this.status = false;
         const { article } = addRes.data;
         this.$router.push({ path: `/article/${article.slug}` });
@@ -118,8 +118,16 @@ export default {
     },
     removeTag(index) {
       this.formData.tagList.splice(index, 1);
-    },
+    }
   },
+  computed: {
+    isUpdate() {
+      return this.$route.name === "update";
+    },
+    routerSlug() {
+      return this.$route.query.slug;
+    }
+  }
 };
 </script>
 
